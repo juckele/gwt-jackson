@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.nmorel.gwtjackson.client.deser.array.dd;
+package com.github.nmorel.gwtjackson.client.deser.array.ddd;
 
 import java.util.List;
 
@@ -25,50 +25,44 @@ import com.github.nmorel.gwtjackson.client.deser.BaseNumberJsonDeserializer.Inte
 import com.github.nmorel.gwtjackson.client.stream.JsonReader;
 
 /**
- * Default {@link JsonDeserializer} implementation for 2D array of int.
+ * Default {@link JsonDeserializer} implementation for 3D array of int.
  *
  * @author Nicolas Morel
  */
-public class PrimitiveIntegerArray2dJsonDeserializer extends AbstractArray2dJsonDeserializer<int[][]> {
+public class PrimitiveIntegerArray3dJsonDeserializer extends AbstractArray3dJsonDeserializer<int[][][]> {
 
-    private static final PrimitiveIntegerArray2dJsonDeserializer INSTANCE = new PrimitiveIntegerArray2dJsonDeserializer();
+    private static final PrimitiveIntegerArray3dJsonDeserializer INSTANCE = new PrimitiveIntegerArray3dJsonDeserializer();
 
     /**
      * @return an instance of {@link PrimitiveIntegerArray2dJsonDeserializer}
      */
-    public static PrimitiveIntegerArray2dJsonDeserializer getInstance() {
+    public static PrimitiveIntegerArray3dJsonDeserializer getInstance() {
         return INSTANCE;
     }
 
-    private PrimitiveIntegerArray2dJsonDeserializer() { }
+    private PrimitiveIntegerArray3dJsonDeserializer() { }
 
     @Override
-    public int[][] doDeserialize( JsonReader reader, JsonDeserializationContext ctx, JsonDeserializerParameters params ) {
-        List<List<Integer>> list = deserializeIntoList( reader, ctx, IntegerJsonDeserializer.getInstance(), params );
+    public int[][][] doDeserialize( JsonReader reader, JsonDeserializationContext ctx, JsonDeserializerParameters params ) {
+        List<List<List<Integer>>> list3d = AbstractArray3dJsonDeserializer.deserializeInto3dList( reader, ctx, IntegerJsonDeserializer.getInstance(), params );
 
-        if ( list.isEmpty() ) {
-            return new int[0][0];
+        int[][][] array = new int[list3d.size()][][];
+        for ( int i = 0; i < list3d.size(); i++ ) {
+        	List<List<Integer>> list2d = list3d.get(i);
+        	array[i] = new int[list2d.size()][];
+        	for ( int j = 0; j < list2d.size(); j++ ) {
+        		List<Integer> list1d = list2d.get(j);
+        		array[i][j] = new int[list1d.size()];
+        		for ( int k = 0; k < list1d.size(); k++ )
+        		{
+        			Integer value = list1d.get(k);
+        			if ( null != value ) {
+        				array[i][j][k] = value;
+        			}
+        		}
+        	}
         }
 
-        List<Integer> firstList = list.get( 0 );
-        if ( firstList.isEmpty() ) {
-            return new int[list.size()][0];
-        }
-
-        int[][] array = new int[list.size()][firstList.size()];
-
-        int i = 0;
-        int j;
-        for ( List<Integer> innerList : list ) {
-            j = 0;
-            for ( Integer value : innerList ) {
-                if ( null != value ) {
-                    array[i][j] = value;
-                }
-                j++;
-            }
-            i++;
-        }
         return array;
     }
 }

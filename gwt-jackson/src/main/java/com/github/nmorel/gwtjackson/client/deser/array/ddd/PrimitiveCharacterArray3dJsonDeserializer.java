@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.nmorel.gwtjackson.client.deser.array.dd;
+package com.github.nmorel.gwtjackson.client.deser.array.ddd;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,88 +27,25 @@ import com.github.nmorel.gwtjackson.client.stream.JsonReader;
 import com.github.nmorel.gwtjackson.client.stream.JsonToken;
 
 /**
- * Default {@link JsonDeserializer} implementation for 2D array of char.
+ * Default {@link JsonDeserializer} implementation for 3D array of char.
  *
  * @author Nicolas Morel
  */
-public class PrimitiveCharacterArray2dJsonDeserializer extends AbstractArray2dJsonDeserializer<char[][]> {
+public class PrimitiveCharacterArray3dJsonDeserializer extends AbstractArray3dJsonDeserializer<char[][][]> {
 
-    private static final PrimitiveCharacterArray2dJsonDeserializer INSTANCE = new PrimitiveCharacterArray2dJsonDeserializer();
+    private static final PrimitiveCharacterArray3dJsonDeserializer INSTANCE = new PrimitiveCharacterArray3dJsonDeserializer();
 
     /**
      * @return an instance of {@link PrimitiveCharacterArray2dJsonDeserializer}
      */
-    public static PrimitiveCharacterArray2dJsonDeserializer getInstance() {
+    public static PrimitiveCharacterArray3dJsonDeserializer getInstance() {
         return INSTANCE;
     }
 
-    private PrimitiveCharacterArray2dJsonDeserializer() { }
+    private PrimitiveCharacterArray3dJsonDeserializer() { }
 
     @Override
-    public char[][] doDeserialize( JsonReader reader, JsonDeserializationContext ctx, JsonDeserializerParameters params ) {
-
-        char[][] result;
-
-        reader.beginArray();
-        JsonToken token = reader.peek();
-
-        if ( JsonToken.END_ARRAY == token ) {
-
-            // empty array
-            result = new char[0][0];
-
-        } else if ( JsonToken.STRING == token ) {
-
-            // char[] are encoded as String
-
-            List<char[]> list = new ArrayList<char[]>();
-            int size = 0;
-            while ( JsonToken.END_ARRAY != token ) {
-                char[] decoded = reader.nextString().toCharArray();
-                size = Math.max( size, decoded.length );
-                list.add( decoded );
-                token = reader.peek();
-            }
-
-            result = new char[list.size()][size];
-            int i = 0;
-            for ( char[] value : list ) {
-                if ( null != value ) {
-                    result[i] = value;
-                }
-                i++;
-            }
-
-        } else {
-
-            List<List<Character>> list = doDeserializeIntoList( reader, ctx, CharacterJsonDeserializer.getInstance(), params, token );
-
-            List<Character> firstList = list.get( 0 );
-            if ( firstList.isEmpty() ) {
-
-                result = new char[list.size()][0];
-
-            } else {
-
-                result = new char[list.size()][firstList.size()];
-
-                int i = 0;
-                int j;
-                for ( List<Character> innerList : list ) {
-                    j = 0;
-                    for ( Character value : innerList ) {
-                        if ( null != value ) {
-                            result[i][j] = value;
-                        }
-                        j++;
-                    }
-                    i++;
-                }
-            }
-
-        }
-
-        reader.endArray();
-        return result;
+    public char[][][] doDeserialize( JsonReader reader, JsonDeserializationContext ctx, JsonDeserializerParameters params ) {
+        return new char[0][][];
     }
 }

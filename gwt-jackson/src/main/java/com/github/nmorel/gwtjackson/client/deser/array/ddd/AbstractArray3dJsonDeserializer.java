@@ -44,63 +44,37 @@ public abstract class AbstractArray3dJsonDeserializer<T> extends JsonDeserialize
      *
      * @return a list containing all the elements of the array
      */
-    protected <C> List<List<List<C>>> deserializeIntoList( JsonReader reader, JsonDeserializationContext ctx, JsonDeserializer<C> deserializer,
+    public static <C> List<List<List<C>>> deserializeInto3dList( JsonReader reader, JsonDeserializationContext ctx, JsonDeserializer<C> deserializer,
                                                      JsonDeserializerParameters params ) {
-        List<List<List<C>>> list;
 
+    	List<List<List<C>>> list3d = new ArrayList<List<List<C>>>();
         reader.beginArray();
         JsonToken token = reader.peek();
-
-        if ( JsonToken.END_ARRAY == token ) {
-
-            // empty array, no need to create a list
-            list = Collections.emptyList();
-
-        } else {
-
-            list = doDeserializeIntoList( reader, ctx, deserializer, params, token );
-
-        }
-
-        reader.endArray();
-        return list;
-    }
-
-    protected <C> List<List<List<C>>> doDeserializeIntoList( JsonReader reader, JsonDeserializationContext ctx,
-                                                       JsonDeserializer<C> deserializer, JsonDeserializerParameters params,
-                                                       JsonToken token ) {
-        List<List<C>> list;
-        list = new ArrayList<List<List<C>>>();
-        // we keep the size of the first inner list to initialize the next lists with the correct size
-	// TODO: Java arrays do not need to be regular in size, so this is a dangerous assumption (maybe?)
-        int size = -1;
-
         while ( JsonToken.END_ARRAY != token ) {
 
-            // Creating a new
-            List<C> innerList;
+            List<List<C>> list2d = new ArrayList<List<C>>();
             reader.beginArray();
             JsonToken innerToken = reader.peek();
-            if ( JsonToken.END_ARRAY == innerToken ) {
-                // empty array, no need to create a list
-                innerList = Collections.emptyList();
-            } else {
-                if ( size >= 0 ) {
-                    innerList = new ArrayList<C>( size );
-                } else {
-                    innerList = new ArrayList<C>();
+            while ( JsonToken.END_ARRAY != innerToken ) {
+
+            	List<C> list1d = new ArrayList<C>();
+                reader.beginArray();
+                JsonToken token1d = reader.peek();
+
+                while ( JsonToken.END_ARRAY != token1d ) {
+                    list1d.add( deserializer.deserialize( reader, ctx, params ) );
+                    token1d = reader.peek();
                 }
-                while ( JsonToken.END_ARRAY != innerToken ) {
-                    innerList.add( deserializer.deserialize( reader, ctx, params ) );
-                    innerToken = reader.peek();
-                }
-                size = innerList.size();
+                reader.endArray();
+                list2d.add(list1d);
+
+                innerToken = reader.peek();
             }
             reader.endArray();
-            list.add( innerList );
+            list3d.add( list2d );
 
             token = reader.peek();
         }
-        return list;
+        return list3d;
     }
 }

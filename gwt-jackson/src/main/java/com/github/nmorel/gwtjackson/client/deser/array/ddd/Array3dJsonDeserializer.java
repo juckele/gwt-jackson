@@ -33,7 +33,7 @@ public class Array3dJsonDeserializer<T> extends AbstractArray3dJsonDeserializer<
 
     public interface Array3dCreator<T> {
 
-        T[][][] create( int first, int second );
+        T[][][] create( int first, int second, int third );
     }
 
     /**
@@ -68,20 +68,20 @@ public class Array3dJsonDeserializer<T> extends AbstractArray3dJsonDeserializer<
 
     @Override
     protected T[][][] doDeserialize( JsonReader reader, JsonDeserializationContext ctx, JsonDeserializerParameters params ) {
-        List<List<List<T>>> list3d = deserializeIntoList( reader, ctx, deserializer, params );
+        List<List<List<T>>> list3d = AbstractArray3dJsonDeserializer.deserializeInto3dList( reader, ctx, deserializer, params );
 
         if ( list3d.isEmpty() ) {
-            return array3dCreator.create( 0, 0 );
+            return array3dCreator.create( 0, 0, 0 );
         }
 
         List<List<T>> firstList2d = list3d.get( 0 );
         if ( firstList2d.isEmpty() ) {
-            return array3dCreator.create( list.size(), 0 );
+            return array3dCreator.create( list3d.size(), 0, 0 );
         }
 
         List<T> firstList1d = firstList2d.get( 0 );
         if ( firstList1d.isEmpty() ) {
-            return array3dCreator.create( list.size(), 0 );
+            return array3dCreator.create( list3d.size(), firstList2d.size(), 0 );
         }
 
         T[][][] array = array3dCreator.create( list3d.size(), firstList2d.size(), firstList1d.size() );

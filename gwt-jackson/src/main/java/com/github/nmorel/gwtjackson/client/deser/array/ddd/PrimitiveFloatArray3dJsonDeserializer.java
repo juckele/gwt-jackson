@@ -40,42 +40,30 @@ public class PrimitiveFloatArray3dJsonDeserializer extends AbstractArray3dJsonDe
         return INSTANCE;
     }
 
-    private PrimitiveFloatArray2dJsonDeserializer() { }
+    private PrimitiveFloatArray3dJsonDeserializer() { }
 
     @Override
     public float[][][] doDeserialize( JsonReader reader, JsonDeserializationContext ctx, JsonDeserializerParameters params ) {
-        List<List<List<Float>>> list3d = deserializeIntoList( reader, ctx, FloatJsonDeserializer.getInstance(), params );
+        List<List<List<Float>>> list3d = AbstractArray3dJsonDeserializer.deserializeInto3dList( reader, ctx, FloatJsonDeserializer.getInstance(), params );
 
-        if ( list.isEmpty() ) {
-            return new float[0][0][0];
+        float[][][] array = new float[list3d.size()][][];
+        for ( int i = 0; i < list3d.size(); i++ ) {
+        	List<List<Float>> list2d = list3d.get(i);
+        	array[i] = new float[list2d.size()][];
+        	for ( int j = 0; j < list2d.size(); j++ ) {
+        		List<Float> list1d = list2d.get(j);
+        		array[i][j] = new float[list1d.size()];
+        		for ( int k = 0; k < list1d.size(); k++ )
+        		{
+        			Float value = list1d.get(k);
+        			if ( null != value ) {
+        				array[i][j][k] = value;
+        			}
+        		}
+        	}
         }
 
-        List<List<Float>> firstList2d = list3d.get( 0 );
-        if ( firstList.isEmpty() ) {
-            return new float[list3d.size()][0][0];
-        }
-        List<Float> firstList1d = firstList2d.get( 0 );
-        if ( firstList.isEmpty() ) {
-            return new float[list3d.size()][firstList2d.size()][0];
-        }
-
-        float[][] array = new float[list3d.size()][firstList2d.size()][firstList1d.size()];
-
-        int i = 0;
-        for( List<List<Float>> list2d : list3d ) {
-            int j = 0;
-            for ( List<Float> list1d : list2d ) {
-                int k = 0;
-                for ( Float value : list1d ) {
-                    if ( null != value ) {
-                        array[i][j][k] = value;
-                    }
-                    k++;
-                }
-                j++
-            }
-            i++;
-        }
         return array;
+
     }
 }

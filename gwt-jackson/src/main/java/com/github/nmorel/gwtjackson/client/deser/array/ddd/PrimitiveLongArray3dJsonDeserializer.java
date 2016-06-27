@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.nmorel.gwtjackson.client.deser.array.dd;
+package com.github.nmorel.gwtjackson.client.deser.array.ddd;
 
 import java.util.List;
 
@@ -25,50 +25,44 @@ import com.github.nmorel.gwtjackson.client.deser.BaseNumberJsonDeserializer.Long
 import com.github.nmorel.gwtjackson.client.stream.JsonReader;
 
 /**
- * Default {@link JsonDeserializer} implementation for 2D array of long.
+ * Default {@link JsonDeserializer} implementation for 3D array of long.
  *
  * @author Nicolas Morel
  */
-public class PrimitiveLongArray2dJsonDeserializer extends AbstractArray2dJsonDeserializer<long[][]> {
+public class PrimitiveLongArray3dJsonDeserializer extends AbstractArray3dJsonDeserializer<long[][][]> {
 
-    private static final PrimitiveLongArray2dJsonDeserializer INSTANCE = new PrimitiveLongArray2dJsonDeserializer();
+    private static final PrimitiveLongArray3dJsonDeserializer INSTANCE = new PrimitiveLongArray3dJsonDeserializer();
 
     /**
      * @return an instance of {@link PrimitiveLongArray2dJsonDeserializer}
      */
-    public static PrimitiveLongArray2dJsonDeserializer getInstance() {
+    public static PrimitiveLongArray3dJsonDeserializer getInstance() {
         return INSTANCE;
     }
 
-    private PrimitiveLongArray2dJsonDeserializer() { }
+    private PrimitiveLongArray3dJsonDeserializer() { }
 
     @Override
-    public long[][] doDeserialize( JsonReader reader, JsonDeserializationContext ctx, JsonDeserializerParameters params ) {
-        List<List<Long>> list = deserializeIntoList( reader, ctx, LongJsonDeserializer.getInstance(), params );
+    public long[][][] doDeserialize( JsonReader reader, JsonDeserializationContext ctx, JsonDeserializerParameters params ) {
+        List<List<List<Long>>> list3d = AbstractArray3dJsonDeserializer.deserializeInto3dList( reader, ctx, LongJsonDeserializer.getInstance(), params );
 
-        if ( list.isEmpty() ) {
-            return new long[0][0];
+        long[][][] array = new long[list3d.size()][][];
+        for ( int i = 0; i < list3d.size(); i++ ) {
+        	List<List<Long>> list2d = list3d.get(i);
+        	array[i] = new long[list2d.size()][];
+        	for ( int j = 0; j < list2d.size(); j++ ) {
+        		List<Long> list1d = list2d.get(j);
+        		array[i][j] = new long[list1d.size()];
+        		for ( int k = 0; k < list1d.size(); k++ )
+        		{
+        			Long value = list1d.get(k);
+        			if ( null != value ) {
+        				array[i][j][k] = value;
+        			}
+        		}
+        	}
         }
 
-        List<Long> firstList = list.get( 0 );
-        if ( firstList.isEmpty() ) {
-            return new long[list.size()][0];
-        }
-
-        long[][] array = new long[list.size()][firstList.size()];
-
-        int i = 0;
-        int j;
-        for ( List<Long> innerList : list ) {
-            j = 0;
-            for ( Long value : innerList ) {
-                if ( null != value ) {
-                    array[i][j] = value;
-                }
-                j++;
-            }
-            i++;
-        }
         return array;
     }
 }

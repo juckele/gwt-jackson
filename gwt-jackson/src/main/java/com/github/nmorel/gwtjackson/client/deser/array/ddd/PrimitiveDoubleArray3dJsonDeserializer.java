@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.nmorel.gwtjackson.client.deser.array.dd;
+package com.github.nmorel.gwtjackson.client.deser.array.ddd;
 
 import java.util.List;
 
@@ -25,50 +25,44 @@ import com.github.nmorel.gwtjackson.client.deser.BaseNumberJsonDeserializer.Doub
 import com.github.nmorel.gwtjackson.client.stream.JsonReader;
 
 /**
- * Default {@link JsonDeserializer} implementation for 2D array of double.
+ * Default {@link JsonDeserializer} implementation for 3D array of double.
  *
  * @author Nicolas Morel
  */
-public class PrimitiveDoubleArray2dJsonDeserializer extends AbstractArray2dJsonDeserializer<double[][]> {
+public class PrimitiveDoubleArray3dJsonDeserializer extends AbstractArray3dJsonDeserializer<double[][][]> {
 
-    private static final PrimitiveDoubleArray2dJsonDeserializer INSTANCE = new PrimitiveDoubleArray2dJsonDeserializer();
+    private static final PrimitiveDoubleArray3dJsonDeserializer INSTANCE = new PrimitiveDoubleArray3dJsonDeserializer();
 
     /**
      * @return an instance of {@link PrimitiveDoubleArray2dJsonDeserializer}
      */
-    public static PrimitiveDoubleArray2dJsonDeserializer getInstance() {
+    public static PrimitiveDoubleArray3dJsonDeserializer getInstance() {
         return INSTANCE;
     }
 
-    private PrimitiveDoubleArray2dJsonDeserializer() { }
+    private PrimitiveDoubleArray3dJsonDeserializer() { }
 
     @Override
-    public double[][] doDeserialize( JsonReader reader, JsonDeserializationContext ctx, JsonDeserializerParameters params ) {
-        List<List<Double>> list = deserializeIntoList( reader, ctx, DoubleJsonDeserializer.getInstance(), params );
+    public double[][][] doDeserialize( JsonReader reader, JsonDeserializationContext ctx, JsonDeserializerParameters params ) {
+        List<List<List<Double>>> list3d = AbstractArray3dJsonDeserializer.deserializeInto3dList( reader, ctx, DoubleJsonDeserializer.getInstance(), params );
 
-        if ( list.isEmpty() ) {
-            return new double[0][0];
+        double[][][] array = new double[list3d.size()][][];
+        for ( int i = 0; i < list3d.size(); i++ ) {
+        	List<List<Double>> list2d = list3d.get(i);
+        	array[i] = new double[list2d.size()][];
+        	for ( int j = 0; j < list2d.size(); j++ ) {
+        		List<Double> list1d = list2d.get(j);
+        		array[i][j] = new double[list1d.size()];
+        		for ( int k = 0; k < list1d.size(); k++ )
+        		{
+        			Double value = list1d.get(k);
+        			if ( null != value ) {
+        				array[i][j][k] = value;
+        			}
+        		}
+        	}
         }
 
-        List<Double> firstList = list.get( 0 );
-        if ( firstList.isEmpty() ) {
-            return new double[list.size()][0];
-        }
-
-        double[][] array = new double[list.size()][firstList.size()];
-
-        int i = 0;
-        int j;
-        for ( List<Double> innerList : list ) {
-            j = 0;
-            for ( Double value : innerList ) {
-                if ( null != value ) {
-                    array[i][j] = value;
-                }
-                j++;
-            }
-            i++;
-        }
         return array;
     }
 }

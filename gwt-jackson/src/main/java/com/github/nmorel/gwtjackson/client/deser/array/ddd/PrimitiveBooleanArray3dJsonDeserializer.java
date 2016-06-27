@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.nmorel.gwtjackson.client.deser.array.dd;
+package com.github.nmorel.gwtjackson.client.deser.array.ddd;
 
 import java.util.List;
 
@@ -25,50 +25,44 @@ import com.github.nmorel.gwtjackson.client.deser.BooleanJsonDeserializer;
 import com.github.nmorel.gwtjackson.client.stream.JsonReader;
 
 /**
- * Default {@link JsonDeserializer} implementation for 2D array of boolean.
+ * Default {@link JsonDeserializer} implementation for 3D array of boolean.
  *
  * @author Nicolas Morel
  */
-public class PrimitiveBooleanArray2dJsonDeserializer extends AbstractArray2dJsonDeserializer<boolean[][]> {
+public class PrimitiveBooleanArray3dJsonDeserializer extends AbstractArray3dJsonDeserializer<boolean[][][]> {
 
-    private static final PrimitiveBooleanArray2dJsonDeserializer INSTANCE = new PrimitiveBooleanArray2dJsonDeserializer();
+    private static final PrimitiveBooleanArray3dJsonDeserializer INSTANCE = new PrimitiveBooleanArray3dJsonDeserializer();
 
     /**
      * @return an instance of {@link PrimitiveBooleanArray2dJsonDeserializer}
      */
-    public static PrimitiveBooleanArray2dJsonDeserializer getInstance() {
+    public static PrimitiveBooleanArray3dJsonDeserializer getInstance() {
         return INSTANCE;
     }
 
-    private PrimitiveBooleanArray2dJsonDeserializer() { }
+    private PrimitiveBooleanArray3dJsonDeserializer() { }
 
     @Override
-    public boolean[][] doDeserialize( JsonReader reader, JsonDeserializationContext ctx, JsonDeserializerParameters params ) {
-        List<List<Boolean>> list = deserializeIntoList( reader, ctx, BooleanJsonDeserializer.getInstance(), params );
+    public boolean[][][] doDeserialize( JsonReader reader, JsonDeserializationContext ctx, JsonDeserializerParameters params ) {
+        List<List<List<Boolean>>> list3d = AbstractArray3dJsonDeserializer.deserializeInto3dList( reader, ctx, BooleanJsonDeserializer.getInstance(), params );
 
-        if ( list.isEmpty() ) {
-            return new boolean[0][0];
+        boolean[][][] array = new boolean[list3d.size()][][];
+        for ( int i = 0; i < list3d.size(); i++ ) {
+        	List<List<Boolean>> list2d = list3d.get(i);
+        	array[i] = new boolean[list2d.size()][];
+        	for ( int j = 0; j < list2d.size(); j++ ) {
+        		List<Boolean> list1d = list2d.get(j);
+        		array[i][j] = new boolean[list1d.size()];
+        		for ( int k = 0; k < list1d.size(); k++ )
+        		{
+        			Boolean value = list1d.get(k);
+        			if ( null != value ) {
+        				array[i][j][k] = value;
+        			}
+        		}
+        	}
         }
 
-        List<Boolean> firstList = list.get( 0 );
-        if ( firstList.isEmpty() ) {
-            return new boolean[list.size()][0];
-        }
-
-        boolean[][] array = new boolean[list.size()][firstList.size()];
-
-        int i = 0;
-        int j;
-        for ( List<Boolean> innerList : list ) {
-            j = 0;
-            for ( Boolean value : innerList ) {
-                if ( null != value ) {
-                    array[i][j] = value;
-                }
-                j++;
-            }
-            i++;
-        }
         return array;
     }
 }
