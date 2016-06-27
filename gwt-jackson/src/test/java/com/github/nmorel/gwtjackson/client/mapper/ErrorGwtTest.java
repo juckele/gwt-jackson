@@ -72,7 +72,7 @@ public class ErrorGwtTest extends GwtJacksonTestCase {
 
     public static class UnsupportedTypeBean {
         public String aProperty;
-        public String[][][] array3d;
+        public String[][][][] array4d;
         public Map<UnsupportedTypeBean, String> aMap;
     }
 
@@ -83,15 +83,15 @@ public class ErrorGwtTest extends GwtJacksonTestCase {
     public void testMapKeyError() {
         UnsupportedTypeBean bean = new UnsupportedTypeBean();
         bean.aProperty = "propertyString";
-        bean.array3d = new String[][][]{};
+        bean.array4d = new String[][][][]{};
         bean.aMap = new HashMap<UnsupportedTypeBean, String>();
 
         String json = UnsupportedTypeBeanMapper.INSTANCE.write( bean );
         assertEquals( "{\"aProperty\":\"propertyString\"}", json );
 
-        bean = UnsupportedTypeBeanMapper.INSTANCE.read("{\"aProperty\":\"propertyString\",\"array3d\":\"error\",\"aMap\":\"error\"}");
+        bean = UnsupportedTypeBeanMapper.INSTANCE.read("{\"aProperty\":\"propertyString\",\"array4d\":\"error\",\"aMap\":\"error\"}");
         assertEquals( "propertyString", bean.aProperty );
-        assertNull( bean.array3d );
+        assertNull( bean.array4d );
         assertNull( bean.aMap );
     }
 
