@@ -105,7 +105,7 @@ With Maven
 <dependency>
   <groupId>com.github.nmorel.gwtjackson</groupId>
   <artifactId>gwt-jackson</artifactId>
-  <version>0.12.0</version>
+  <version>0.13.0</version>
   <scope>provided</scope>
 </dependency>
 ```
@@ -125,14 +125,15 @@ You can also get maven snapshots using the following repository :
 Without Maven
 -------------
 In addition of gwt-jackson jar you can find [here](https://github.com/nmorel/gwt-jackson/releases), you also need
-- [jackson-annotations-2.6.3.jar](http://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-annotations/2.6.3/jackson-annotations-2.6.3.jar)
-- [jackson-annotations-2.6.3-sources.jar](http://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-annotations/2.6.3/jackson-annotations-2.6.3-sources.jar) for the GWT compilation only
+- [jackson-annotations-2.7.2.jar](http://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-annotations/2.7.2/jackson-annotations-2.7.2.jar)
+- [jackson-annotations-2.7.2-sources.jar](http://search.maven.org/remotecontent?filepath=com/fasterxml/jackson/core/jackson-annotations/2.7.2/jackson-annotations-2.7.2-sources.jar) for the GWT compilation only
 - [javapoet-1.0.0.jar](http://search.maven.org/remotecontent?filepath=com/squareup/javapoet/1.0.0/javapoet-1.0.0.jar) for the GWT compilation only
 
 Server communication
 -------------
 If you need to communicate with your server using REST/Json payload, you can check these framework which integrates gwt-jackson :
-- [GWTP Rest Dispatch](https://github.com/ArcBees/GWTP/wiki/Rest-Dispatch). Check the [example](https://github.com/nmorel/gwt-jackson/tree/master/examples/gwtp).
+- [GWTP Rest Dispatch](http://dev.arcbees.com/gwtp/communication/index.html). Check the [example](https://github.com/nmorel/gwt-jackson/tree/master/examples/gwtp).
+- [RestyGWT](http://resty-gwt.github.io/). Check the [example](https://github.com/nmorel/gwt-jackson/tree/master/examples/restygwt).
 - [Requestor](http://reinert.io/requestor/latest/). Check the [example](https://github.com/nmorel/gwt-jackson/tree/master/examples/requestor).
 - [gwt-jackson-rest](https://github.com/nmorel/gwt-jackson-rest). Check the [example](https://github.com/nmorel/gwt-jackson-rest/tree/master/examples/simple).
 - [GWT RequestBuilder](http://www.gwtproject.org/javadoc/latest/com/google/gwt/http/client/RequestBuilder.html). Check the [example](https://github.com/nmorel/gwt-jackson/tree/master/examples/hello).

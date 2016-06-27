@@ -3,7 +3,7 @@
   <parent>
     <artifactId>examples</artifactId>
     <groupId>com.github.nmorel.gwtjackson</groupId>
-    <version>0.13.0-SNAPSHOT</version>
+    <version>0.13.1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -15,7 +15,7 @@
 
   <properties>
     <gwt.module>com.github.nmorel.gwtjackson.hello.HelloRequestor</gwt.module>
-    <requestor.version>0.1.0</requestor.version>
+    <requestor.version>0.2.0</requestor.version>
     <gdeferred.version>0.9.0</gdeferred.version>
   </properties>
 
