@@ -28,9 +28,12 @@ import com.github.nmorel.gwtjackson.client.deser.array.ArrayJsonDeserializer;
 import com.github.nmorel.gwtjackson.client.deser.array.ArrayJsonDeserializer.ArrayCreator;
 import com.github.nmorel.gwtjackson.client.deser.array.dd.Array2dJsonDeserializer;
 import com.github.nmorel.gwtjackson.client.deser.array.dd.Array2dJsonDeserializer.Array2dCreator;
+import com.github.nmorel.gwtjackson.client.deser.array.ddd.Array3dJsonDeserializer;
+import com.github.nmorel.gwtjackson.client.deser.array.ddd.Array3dJsonDeserializer.Array3dCreator;
 import com.github.nmorel.gwtjackson.client.deser.map.key.KeyDeserializer;
 import com.github.nmorel.gwtjackson.client.ser.array.ArrayJsonSerializer;
 import com.github.nmorel.gwtjackson.client.ser.array.dd.Array2dJsonSerializer;
+import com.github.nmorel.gwtjackson.client.ser.array.ddd.Array3dJsonSerializer;
 import com.github.nmorel.gwtjackson.client.ser.bean.AbstractBeanJsonSerializer;
 import com.github.nmorel.gwtjackson.client.ser.map.key.KeySerializer;
 import com.github.nmorel.gwtjackson.rebind.RebindConfiguration.MapperInstance;
@@ -297,9 +300,12 @@ public abstract class AbstractCreator extends AbstractSourceCreator {
             } else if ( arrayType.getRank() == 2 ) {
                 // Two dimension array
                 arraySerializer = Array2dJsonSerializer.class;
+            } else if ( arrayType.getRank() == 3 ) {
+                // Three dimension array
+                arraySerializer = Array3dJsonSerializer.class;
             } else {
                 // More dimensions are not supported
-                String message = "Arrays with 3 or more dimensions are not supported";
+                String message = "Arrays with 4 or more dimensions are not supported";
                 logger.log( TreeLogger.Type.WARN, message );
                 throw new UnsupportedTypeException( message );
             }
@@ -528,9 +534,25 @@ public abstract class AbstractCreator extends AbstractSourceCreator {
                         .build();
                 arrayDeserializer = Array2dJsonDeserializer.class;
 
+            } else if ( arrayType.getRank() == 3 ) {
+                // Three dimensions array
+                arrayCreator = TypeSpec.anonymousClassBuilder( "" )
+                        .addSuperinterface( parameterizedName( Array3dCreator.class, leafType ) )
+                        .addMethod( MethodSpec.methodBuilder( "create" )
+                                .addAnnotation( Override.class )
+                                .addModifiers( Modifier.PUBLIC )
+                                .addParameter( int.class, "first" )
+                                .addParameter( int.class, "second" )
+                                .addParameter( int.class, "third" )
+				.addStatement( "return new $T[$N][$N][$N]", rawName( leafType ), "first", "second", "third" )
+                                .returns( typeName( arrayType ) )
+                                .build() )
+                        .build();
+                arrayDeserializer = Array3dJsonDeserializer.class;
+
             } else {
                 // More dimensions are not supported
-                String message = "Arrays with 3 or more dimensions are not supported";
+                String message = "Arrays with 4 or more dimensions are not supported";
                 logger.log( TreeLogger.Type.WARN, message );
                 throw new UnsupportedTypeException( message );
             }

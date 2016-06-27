@@ -88,6 +88,14 @@ import com.github.nmorel.gwtjackson.client.deser.array.dd.PrimitiveFloatArray2dJ
 import com.github.nmorel.gwtjackson.client.deser.array.dd.PrimitiveIntegerArray2dJsonDeserializer;
 import com.github.nmorel.gwtjackson.client.deser.array.dd.PrimitiveLongArray2dJsonDeserializer;
 import com.github.nmorel.gwtjackson.client.deser.array.dd.PrimitiveShortArray2dJsonDeserializer;
+import com.github.nmorel.gwtjackson.client.deser.array.ddd.PrimitiveBooleanArray3dJsonDeserializer;
+import com.github.nmorel.gwtjackson.client.deser.array.ddd.PrimitiveByteArray3dJsonDeserializer;
+import com.github.nmorel.gwtjackson.client.deser.array.ddd.PrimitiveCharacterArray3dJsonDeserializer;
+import com.github.nmorel.gwtjackson.client.deser.array.ddd.PrimitiveDoubleArray3dJsonDeserializer;
+import com.github.nmorel.gwtjackson.client.deser.array.ddd.PrimitiveFloatArray3dJsonDeserializer;
+import com.github.nmorel.gwtjackson.client.deser.array.ddd.PrimitiveIntegerArray3dJsonDeserializer;
+import com.github.nmorel.gwtjackson.client.deser.array.ddd.PrimitiveLongArray3dJsonDeserializer;
+import com.github.nmorel.gwtjackson.client.deser.array.ddd.PrimitiveShortArray3dJsonDeserializer;
 import com.github.nmorel.gwtjackson.client.deser.collection.AbstractCollectionJsonDeserializer;
 import com.github.nmorel.gwtjackson.client.deser.collection.AbstractListJsonDeserializer;
 import com.github.nmorel.gwtjackson.client.deser.collection.AbstractQueueJsonDeserializer;
@@ -171,6 +179,14 @@ import com.github.nmorel.gwtjackson.client.ser.array.dd.PrimitiveFloatArray2dJso
 import com.github.nmorel.gwtjackson.client.ser.array.dd.PrimitiveIntegerArray2dJsonSerializer;
 import com.github.nmorel.gwtjackson.client.ser.array.dd.PrimitiveLongArray2dJsonSerializer;
 import com.github.nmorel.gwtjackson.client.ser.array.dd.PrimitiveShortArray2dJsonSerializer;
+import com.github.nmorel.gwtjackson.client.ser.array.ddd.PrimitiveBooleanArray3dJsonSerializer;
+import com.github.nmorel.gwtjackson.client.ser.array.ddd.PrimitiveByteArray3dJsonSerializer;
+import com.github.nmorel.gwtjackson.client.ser.array.ddd.PrimitiveCharacterArray3dJsonSerializer;
+import com.github.nmorel.gwtjackson.client.ser.array.ddd.PrimitiveDoubleArray3dJsonSerializer;
+import com.github.nmorel.gwtjackson.client.ser.array.ddd.PrimitiveFloatArray3dJsonSerializer;
+import com.github.nmorel.gwtjackson.client.ser.array.ddd.PrimitiveIntegerArray3dJsonSerializer;
+import com.github.nmorel.gwtjackson.client.ser.array.ddd.PrimitiveLongArray3dJsonSerializer;
+import com.github.nmorel.gwtjackson.client.ser.array.ddd.PrimitiveShortArray3dJsonSerializer;
 import com.github.nmorel.gwtjackson.client.ser.map.MapJsonSerializer;
 import com.github.nmorel.gwtjackson.client.ser.map.key.BooleanKeySerializer;
 import com.github.nmorel.gwtjackson.client.ser.map.key.DateKeySerializer;
@@ -294,6 +310,24 @@ public final class DefaultConfiguration extends AbstractConfiguration {
                 .deserializer( PrimitiveLongArray2dJsonDeserializer.class );
         type( short[][].class ).serializer( PrimitiveShortArray2dJsonSerializer.class )
                 .deserializer( PrimitiveShortArray2dJsonDeserializer.class );
+
+        // Primitive 3D Array mappers
+        type( boolean[][][].class ).serializer( PrimitiveBooleanArray3dJsonSerializer.class )
+                .deserializer( PrimitiveBooleanArray3dJsonDeserializer.class );
+        type( byte[][][].class ).serializer( PrimitiveByteArray3dJsonSerializer.class )
+                .deserializer( PrimitiveByteArray3dJsonDeserializer.class );
+        type( char[][][].class ).serializer( PrimitiveCharacterArray3dJsonSerializer.class )
+                .deserializer( PrimitiveCharacterArray3dJsonDeserializer.class );
+        type( double[][][].class ).serializer( PrimitiveDoubleArray3dJsonSerializer.class )
+                .deserializer( PrimitiveDoubleArray3dJsonDeserializer.class );
+        type( float[][][].class ).serializer( PrimitiveFloatArray3dJsonSerializer.class )
+                .deserializer( PrimitiveFloatArray3dJsonDeserializer.class );
+        type( int[][][].class ).serializer( PrimitiveIntegerArray3dJsonSerializer.class )
+                .deserializer( PrimitiveIntegerArray3dJsonDeserializer.class );
+        type( long[][][].class ).serializer( PrimitiveLongArray3dJsonSerializer.class )
+                .deserializer( PrimitiveLongArray3dJsonDeserializer.class );
+        type( short[][][].class ).serializer( PrimitiveShortArray3dJsonSerializer.class )
+                .deserializer( PrimitiveShortArray3dJsonDeserializer.class );
 
         // Map's key mappers
         key( Object.class ).serializer( ObjectKeySerializer.class ).deserializer( StringKeyDeserializer.class );
