@@ -593,7 +593,7 @@ public abstract class AbstractCreator extends AbstractSourceCreator {
                                 .addParameter( int.class, "first" )
                                 .addParameter( int.class, "second" )
                                 .addParameter( int.class, "third" )
-				.addStatement( "return new $T[$N][$N][$N]", rawName( leafType ), "first", "second", "third" )
+                                .addStatement( "return new $T[$N][$N][$N]", rawName( leafType ), "first", "second", "third" )
                                 .returns( typeName( arrayType ) )
                                 .build() )
                         .build();

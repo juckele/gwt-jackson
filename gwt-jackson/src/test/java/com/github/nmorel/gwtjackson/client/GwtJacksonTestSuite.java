@@ -129,6 +129,7 @@ import com.github.nmorel.gwtjackson.client.ser.array.ByteArray2dJsonSerializerTe
 import com.github.nmorel.gwtjackson.client.ser.array.ByteArrayJsonSerializerTest;
 import com.github.nmorel.gwtjackson.client.ser.array.ddd.DoubleArray3dJsonSerializerTest;
 import com.github.nmorel.gwtjackson.client.ser.array.ddd.FloatArray3dJsonSerializerTest;
+import com.github.nmorel.gwtjackson.client.ser.array.ddd.UUIDArray3dJsonSerializerTest;
 import com.github.nmorel.gwtjackson.client.ser.collection.CollectionJsonSerializerTest;
 import com.github.nmorel.gwtjackson.client.ser.collection.IterableJsonSerializerTest;
 import com.github.nmorel.gwtjackson.client.ser.collection.ListJsonSerializerTest;
@@ -212,6 +213,7 @@ public class GwtJacksonTestSuite extends TestCase {
         suite.addTestSuite( SqlTimestampJsonSerializerTest.class );
         suite.addTestSuite( StringJsonSerializerTest.class );
         suite.addTestSuite( UUIDJsonSerializerTest.class );
+        suite.addTestSuite( UUIDArray3dJsonSerializerTest.class );
         suite.addTestSuite( VoidJsonSerializerTest.class );
 
         // Default key serializers
