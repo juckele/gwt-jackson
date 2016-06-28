@@ -17,8 +17,11 @@
 package com.github.nmorel.gwtjackson.client.ser;
 
 import com.github.nmorel.gwtjackson.client.GwtJacksonTestCase;
+import com.github.nmorel.gwtjackson.client.JsonDeserializationContext;
+import com.github.nmorel.gwtjackson.client.JsonDeserializer;
 import com.github.nmorel.gwtjackson.client.JsonSerializationContext;
 import com.github.nmorel.gwtjackson.client.JsonSerializer;
+import com.github.nmorel.gwtjackson.client.stream.JsonReader;
 import com.github.nmorel.gwtjackson.client.stream.JsonWriter;
 
 /**
@@ -27,6 +30,9 @@ import com.github.nmorel.gwtjackson.client.stream.JsonWriter;
 public abstract class AbstractJsonSerializerTest<T> extends GwtJacksonTestCase {
 
     protected abstract JsonSerializer<T> createSerializer();
+    protected JsonDeserializer<T> createDeserializer() {
+    	throw new UnsupportedOperationException("Required for deserialization tests.");
+    }
 
     public void testSerializeNullValue() {
         assertSerialization( "null", null );
@@ -39,8 +45,27 @@ public abstract class AbstractJsonSerializerTest<T> extends GwtJacksonTestCase {
         return writer.getOutput();
     }
 
+    protected T deserialize( String value ) {
+    	JsonDeserializationContext ctx = JsonDeserializationContext.builder().build();
+        JsonReader reader = ctx.newJsonReader(value);
+    	T result = createDeserializer().deserialize(reader, ctx);
+        return result;
+    }
+
     protected void assertSerialization( String expected, T value ) {
         assertEquals( expected, serialize( value ) );
+    }
+
+    protected void assertDeserialization( T expected, String value ) {
+        assertEquals( expected, deserialize( value ) );
+    }
+
+    protected void assertSerializationAndDeserialization( T value ) {
+        assertEquals( value, deserialize( serialize( value ) ) );
+    }
+
+    protected void assertDeserializationAndSerialization( String value ) {
+        assertEquals( value, serialize( deserialize( value ) ) );
     }
 
     public abstract void testSerializeValue();
