@@ -142,5 +142,6 @@ Copyright and license
 -------------
 
 Copyright 2014 Nicolas Morel under the [Apache 2.0 license](LICENSE).
+Copyright 2016 John H. Uckele under the [Apache 2.0 license](LICENSE).
 
 <img alt="" class="attr__format__media_large attr__typeof__foaf:Image img__fid__7476 img__view_mode__media_large media-image" src="https://www.cloudbees.com/sites/default/files/styles/large/public/Button-Built-on-CB-1.png?itok=3Tnkun-C" style="height:61px; width:178px">
