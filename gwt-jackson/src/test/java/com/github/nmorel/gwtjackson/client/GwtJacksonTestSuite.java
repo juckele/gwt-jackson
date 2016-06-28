@@ -127,6 +127,7 @@ import com.github.nmorel.gwtjackson.client.ser.VoidJsonSerializerTest;
 import com.github.nmorel.gwtjackson.client.ser.array.ArrayJsonSerializerTest;
 import com.github.nmorel.gwtjackson.client.ser.array.ByteArray2dJsonSerializerTest;
 import com.github.nmorel.gwtjackson.client.ser.array.ByteArrayJsonSerializerTest;
+import com.github.nmorel.gwtjackson.client.ser.array.ddd.DoubleArray3dJsonSerializerTest;
 import com.github.nmorel.gwtjackson.client.ser.array.ddd.FloatArray3dJsonSerializerTest;
 import com.github.nmorel.gwtjackson.client.ser.collection.CollectionJsonSerializerTest;
 import com.github.nmorel.gwtjackson.client.ser.collection.IterableJsonSerializerTest;
@@ -166,6 +167,7 @@ import com.github.nmorel.gwtjackson.client.stream.impl.DefaultJsonWriterTest;
 import com.github.nmorel.gwtjackson.client.stream.impl.FastJsonWriterTest;
 import com.github.nmorel.gwtjackson.client.stream.impl.NonBufferedJsonReaderTest;
 import com.google.gwt.junit.tools.GWTTestSuite;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 
@@ -195,6 +197,7 @@ public class GwtJacksonTestSuite extends TestCase {
         suite.addTestSuite( CollectionJsonSerializerTest.class );
         suite.addTestSuite( DateJsonSerializerTest.class );
         suite.addTestSuite( DoubleJsonSerializerTest.class );
+        suite.addTestSuite( DoubleArray3dJsonSerializerTest.class );
         suite.addTestSuite( EnumJsonSerializerTest.class );
         suite.addTestSuite( FloatJsonSerializerTest.class );
         suite.addTestSuite( FloatArray3dJsonSerializerTest.class );

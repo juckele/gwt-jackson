@@ -22,7 +22,9 @@ public class FloatArray3dJsonSerializerTest extends AbstractJsonSerializerTest<f
         float[][][] array = new float[][][]{
             {{0.2f, 0.3f, 0.4f, 0.5f}, {0, 0, 0}, {2, 1, -100}, {400.004f}},
             {{-0f, Float.MAX_VALUE, Float.MIN_VALUE, Float.MIN_NORMAL}},
-            {{0}, {1}, {3f}, {-4f, -6f, -8f}}
+            {{0}, {1}, {3f}, {-4f, -6f, -8f}},
+            {{}, {}, {}},
+            {}
         };
         String serializedString = serialize( array );
         float[][][] deserializedArray = deserialize( serializedString );

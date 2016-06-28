@@ -56,17 +56,5 @@ public abstract class AbstractJsonSerializerTest<T> extends GwtJacksonTestCase {
         assertEquals( expected, serialize( value ) );
     }
 
-    protected void assertDeserialization( T expected, String value ) {
-        assertEquals( expected, deserialize( value ) );
-    }
-
-    protected void assertSerializationAndDeserialization( T value ) {
-        assertEquals( value, deserialize( serialize( value ) ) );
-    }
-
-    protected void assertDeserializationAndSerialization( String value ) {
-        assertEquals( value, serialize( deserialize( value ) ) );
-    }
-
     public abstract void testSerializeValue();
 }
