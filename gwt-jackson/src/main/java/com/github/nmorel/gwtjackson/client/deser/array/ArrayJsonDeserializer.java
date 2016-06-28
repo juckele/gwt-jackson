@@ -31,11 +31,6 @@ import com.github.nmorel.gwtjackson.client.stream.JsonReader;
  */
 public class ArrayJsonDeserializer<T> extends AbstractArrayJsonDeserializer<T[]> {
 
-    public interface ArrayCreator<T> {
-
-        T[] create( int length );
-    }
-
     /**
      * @param deserializer {@link JsonDeserializer} used to deserialize the objects inside the array.
      * @param arrayCreator {@link ArrayCreator} used to create a new array
@@ -69,12 +64,12 @@ public class ArrayJsonDeserializer<T> extends AbstractArrayJsonDeserializer<T[]>
     @Override
     public T[] doDeserializeArray( JsonReader reader, JsonDeserializationContext ctx, JsonDeserializerParameters params ) {
         List<T> list = deserializeIntoList( reader, ctx, deserializer, params );
-        return list.toArray( arrayCreator.create( list.size() ) );
+        return list.toArray( arrayCreator.create1d( list.size() ) );
     }
 
     @Override
     protected T[] doDeserializeSingleArray( JsonReader reader, JsonDeserializationContext ctx, JsonDeserializerParameters params ) {
-        T[] result = arrayCreator.create( 1 );
+        T[] result = arrayCreator.create1d( 1 );
         result[0] = deserializer.deserialize( reader, ctx, params );
         return result;
     }

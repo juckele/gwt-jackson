@@ -21,7 +21,6 @@ import java.util.Arrays;
 import com.github.nmorel.gwtjackson.client.JsonDeserializer;
 import com.github.nmorel.gwtjackson.client.deser.AbstractJsonDeserializerTest;
 import com.github.nmorel.gwtjackson.client.deser.StringJsonDeserializer;
-import com.github.nmorel.gwtjackson.client.deser.array.ArrayJsonDeserializer.ArrayCreator;
 
 /**
  * @author Nicolas Morel
@@ -30,12 +29,12 @@ public class ArrayJsonDeserializerTest extends AbstractJsonDeserializerTest<Stri
 
     @Override
     protected JsonDeserializer<String[]> createDeserializer() {
-        return ArrayJsonDeserializer.newInstance( StringJsonDeserializer.getInstance(), new ArrayCreator<String>() {
-            @Override
-            public String[] create( int length ) {
-                return new String[length];
-            }
-        } );
+        return ArrayJsonDeserializer.newInstance( StringJsonDeserializer.getInstance(), new ArrayCreator<String>(){
+			@Override
+			public String[] create1d(int length) {
+				return new String[length];
+			}
+        });
     }
 
     @Override

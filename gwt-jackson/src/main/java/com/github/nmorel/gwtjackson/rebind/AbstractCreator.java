@@ -16,18 +16,22 @@
 
 package com.github.nmorel.gwtjackson.rebind;
 
-import javax.annotation.Nullable;
-import javax.lang.model.element.Modifier;
+import static com.github.nmorel.gwtjackson.rebind.writer.JTypeName.parameterizedName;
+import static com.github.nmorel.gwtjackson.rebind.writer.JTypeName.rawName;
+import static com.github.nmorel.gwtjackson.rebind.writer.JTypeName.typeName;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Nullable;
+import javax.lang.model.element.Modifier;
+
 import com.github.nmorel.gwtjackson.client.JsonSerializer;
+import com.github.nmorel.gwtjackson.client.deser.array.ArrayCreator;
 import com.github.nmorel.gwtjackson.client.deser.array.ArrayJsonDeserializer;
-import com.github.nmorel.gwtjackson.client.deser.array.ArrayJsonDeserializer.ArrayCreator;
 import com.github.nmorel.gwtjackson.client.deser.array.dd.Array2dJsonDeserializer;
-import com.github.nmorel.gwtjackson.client.deser.array.dd.Array2dJsonDeserializer.Array2dCreator;
 import com.github.nmorel.gwtjackson.client.deser.array.ddd.Array3dJsonDeserializer;
 import com.github.nmorel.gwtjackson.client.deser.array.ddd.Array3dJsonDeserializer.Array3dCreator;
 import com.github.nmorel.gwtjackson.client.deser.map.key.KeyDeserializer;
@@ -70,10 +74,6 @@ import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
-
-import static com.github.nmorel.gwtjackson.rebind.writer.JTypeName.parameterizedName;
-import static com.github.nmorel.gwtjackson.rebind.writer.JTypeName.rawName;
-import static com.github.nmorel.gwtjackson.rebind.writer.JTypeName.typeName;
 
 /**
  * @author Nicolas Morel
@@ -551,53 +551,13 @@ public abstract class AbstractCreator extends AbstractSourceCreator {
         JArrayType arrayType = type.isArray();
         if ( null != arrayType ) {
             TypeSpec arrayCreator;
-            Class arrayDeserializer;
+            Class<?> arrayDeserializer;
             JType leafType = arrayType.getLeafType();
+            int arrayRank = arrayType.getRank();
 
-            if ( arrayType.getRank() == 1 ) {
-                // One dimension array
-                arrayCreator = TypeSpec.anonymousClassBuilder( "" )
-                        .addSuperinterface( parameterizedName( ArrayCreator.class, leafType ) )
-                        .addMethod( MethodSpec.methodBuilder( "create" )
-                                .addAnnotation( Override.class )
-                                .addModifiers( Modifier.PUBLIC )
-                                .addParameter( int.class, "length" )
-                                .addStatement( "return new $T[$N]", rawName( leafType ), "length" )
-                                .returns( typeName( arrayType ) )
-                                .build() )
-                        .build();
+            if ( arrayRank < 10 ) {
+            	arrayCreator = ArrayCreator.build(arrayType, arrayRank, leafType);
                 arrayDeserializer = ArrayJsonDeserializer.class;
-
-            } else if ( arrayType.getRank() == 2 ) {
-                // Two dimensions array
-                arrayCreator = TypeSpec.anonymousClassBuilder( "" )
-                        .addSuperinterface( parameterizedName( Array2dCreator.class, leafType ) )
-                        .addMethod( MethodSpec.methodBuilder( "create" )
-                                .addAnnotation( Override.class )
-                                .addModifiers( Modifier.PUBLIC )
-                                .addParameter( int.class, "first" )
-                                .addParameter( int.class, "second" )
-                                .addStatement( "return new $T[$N][$N]", rawName( leafType ), "first", "second" )
-                                .returns( typeName( arrayType ) )
-                                .build() )
-                        .build();
-                arrayDeserializer = Array2dJsonDeserializer.class;
-
-            } else if ( arrayType.getRank() == 3 ) {
-                // Three dimensions array
-                arrayCreator = TypeSpec.anonymousClassBuilder( "" )
-                        .addSuperinterface( parameterizedName( Array3dCreator.class, leafType ) )
-                        .addMethod( MethodSpec.methodBuilder( "create" )
-                                .addAnnotation( Override.class )
-                                .addModifiers( Modifier.PUBLIC )
-                                .addParameter( int.class, "first" )
-                                .addParameter( int.class, "second" )
-                                .addParameter( int.class, "third" )
-                                .addStatement( "return new $T[$N][$N][$N]", rawName( leafType ), "first", "second", "third" )
-                                .returns( typeName( arrayType ) )
-                                .build() )
-                        .build();
-                arrayDeserializer = Array3dJsonDeserializer.class;
 
             } else {
                 // More dimensions are not supported

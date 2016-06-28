@@ -30,8 +30,8 @@ import com.github.nmorel.gwtjackson.client.ObjectReader;
 import com.github.nmorel.gwtjackson.client.ObjectWriter;
 import com.github.nmorel.gwtjackson.client.deser.BaseNumberJsonDeserializer.IntegerJsonDeserializer;
 import com.github.nmorel.gwtjackson.client.deser.StringJsonDeserializer;
+import com.github.nmorel.gwtjackson.client.deser.array.ArrayCreator;
 import com.github.nmorel.gwtjackson.client.deser.array.ArrayJsonDeserializer;
-import com.github.nmorel.gwtjackson.client.deser.array.ArrayJsonDeserializer.ArrayCreator;
 import com.github.nmorel.gwtjackson.client.deser.array.PrimitiveIntegerArrayJsonDeserializer;
 import com.github.nmorel.gwtjackson.client.deser.collection.ListJsonDeserializer;
 import com.github.nmorel.gwtjackson.client.ser.BaseNumberJsonSerializer.IntegerJsonSerializer;
@@ -156,11 +156,11 @@ public class SingleArrayOptionGwtTest extends GwtJacksonTestCase {
         assertEquals( 1, intArray.length );
         assertEquals( -7, intArray[0] );
 
-        String[] stringArray = ArrayJsonDeserializer.newInstance( StringJsonDeserializer.getInstance(), new ArrayCreator<String>() {
-            @Override
-            public String[] create( int length ) {
-                return new String[length];
-            }
+        String[] stringArray = ArrayJsonDeserializer.newInstance( StringJsonDeserializer.getInstance(), new ArrayCreator<String>(){
+		    @Override
+		    public String[] create1d(int length) {
+		        return new String[length];
+		    }
         } ).deserialize( context.newJsonReader( "\"xyz\"" ), context );
         assertEquals( 1, stringArray.length );
         assertEquals( "xyz", stringArray[0] );
