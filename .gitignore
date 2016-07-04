@@ -3,5 +3,9 @@
 !.idea/copyright/*
 
 *.iml
+*.class
+*.prefs
+*.project
+*.classpath
 
 target/
