@@ -159,7 +159,7 @@ public class SingleArrayOptionGwtTest extends GwtJacksonTestCase {
         String[] stringArray = ArrayJsonDeserializer.newInstance( StringJsonDeserializer.getInstance(), new ArrayCreator<String>(){
 		    @Override
 		    public String[] create1d(int length) {
-		        return new String[length];
+		    return new String[length];
 		    }
         } ).deserialize( context.newJsonReader( "\"xyz\"" ), context );
         assertEquals( 1, stringArray.length );
